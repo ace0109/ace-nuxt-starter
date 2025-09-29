@@ -15,4 +15,10 @@ export default defineNuxtConfig({
   ui: {
     fonts: false,
   },
+
+  eslint: {
+    config: {
+      stylistic: true
+    }
+  }
 })

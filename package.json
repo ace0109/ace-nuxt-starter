@@ -1,5 +1,6 @@
 {
   "name": "nuxt-app",
+  "version": "0.0.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -11,7 +12,9 @@
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "release:first": "standard-version --first-release"
+    "release:first": "standard-version --first-release",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@nuxt/eslint": "1.9.0",
