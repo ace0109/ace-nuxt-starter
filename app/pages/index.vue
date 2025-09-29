@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <UAlert title="Heads up!" description="You can change the primary color in your app config." />
+  <div class="container">
+    HOME
   </div>
 </template>
 
@@ -8,6 +8,8 @@
 
 </script>
 
-<style>
-
+<style lang="postcss" scoped>
+.container {
+  width: 100%;
+}
 </style>
