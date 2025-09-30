@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/ui',
+    '@nuxtjs/i18n',
   ],
   devtools: { enabled: true },
 
@@ -20,5 +21,13 @@ export default defineNuxtConfig({
     config: {
       stylistic: true,
     },
+  },
+
+  i18n: {
+    defaultLocale: 'zh_cn',
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'zh_cn', name: '简体中文', file: 'zh-cn.json' },
+    ],
   },
 })

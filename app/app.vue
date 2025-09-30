@@ -1,5 +1,5 @@
 <template>
-  <UApp>
+  <UApp :locale="locales[locale]">
     <UHeader mode="slideover">
       <template #title>
         <NuxtLogo class="h-6 w-auto" />
@@ -40,6 +40,9 @@
 
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
+import * as locales from '@nuxt/ui/locale'
+
+const { locale } = useI18n()
 
 const route = useRoute()
 
