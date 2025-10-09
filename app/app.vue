@@ -8,6 +8,27 @@
       <UNavigationMenu :items="items" />
 
       <template #right>
+        <UPopover mode="hover">
+          <UButton
+            icon="i-meteor-icons:language"
+            color="neutral"
+            variant="link"
+            :block="false"
+          />
+
+          <template #content>
+            <div class="flex flex-col gap-2 p-2">
+              <NuxtLink
+                v-for="locale in i18nLocales"
+                :key="locale.code"
+                :to="$switchLocalePath(locale.code)"
+              >
+                {{ locale.name }}
+              </NuxtLink>
+            </div>
+          </template>
+        </UPopover>
+
         <UColorModeButton />
 
         <UTooltip
@@ -42,26 +63,28 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 import * as locales from '@nuxt/ui/locale'
 
+const { locales: i18nLocales } = useI18n()
+
 const { locale } = useI18n()
 
 const route = useRoute()
 
 const items = computed<NavigationMenuItem[]>(() => [
   {
-    label: 'Blog',
-    to: '/blog',
+    label: '导航1',
+    to: '/nav/1',
     icon: 'i-carbon-blog',
-    active: route.path.startsWith('/blog'),
+    active: route.path.startsWith('/nav/1'),
   },
   {
-    label: 'Projects',
-    to: '/projects',
+    label: '导航2',
+    to: '/nav/2',
     icon: 'i-ix-projects',
-    active: route.path.startsWith('/projects'),
+    active: route.path.startsWith('/nav/2'),
   },
   {
-    label: 'W-notes',
-    to: 'https://wangcaiyuan.cn',
+    label: '外部链接',
+    to: 'https://nuxt.com/',
     target: '_blank',
     icon: 'i-mdi-onenote',
   },
