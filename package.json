@@ -1,6 +1,6 @@
 {
   "name": "nuxt-app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "private": true,
   "scripts": {
@@ -9,10 +9,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "release": "standard-version",
-    "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major",
-    "release:first": "standard-version --first-release",
+    "release": "commit-and-tag-version",
+    "release:minor": "commit-and-tag-version --release-as minor",
+    "release:major": "commit-and-tag-version --release-as major",
+    "release:first": "commit-and-tag-version --first-release",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -38,6 +38,6 @@
     "@iconify-json/meteor-icons": "^1.2.1",
     "@iconify-json/simple-icons": "^1.2.53",
     "less": "^4.4.1",
-    "standard-version": "^9.5.0"
+    "commit-and-tag-version": "12.6.0"
   }
 }
