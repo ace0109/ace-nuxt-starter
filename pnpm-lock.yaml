@@ -54,6 +54,9 @@ importers:
       '@iconify-json/mdi':
         specifier: ^1.2.3
         version: 1.2.3
+      '@iconify-json/meteor-icons':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@iconify-json/simple-icons':
         specifier: ^1.2.53
         version: 1.2.53
@@ -519,6 +522,9 @@ packages:
 
   '@iconify-json/mdi@1.2.3':
     resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
+
+  '@iconify-json/meteor-icons@1.2.1':
+    resolution: {integrity: sha512-SdYI7XPdqhfnbsDpAtyW1471KS/kqn0hu3VfuTHZmGpNw1hFbtKrIIPykk67Nj2M72ScqMrhuPBA1HKQPbDfQQ==}
 
   '@iconify-json/simple-icons@1.2.53':
     resolution: {integrity: sha512-8GEW5mshsPAZpVAJmkBG/niR2qn8t4U03Wmz6aSD9R4VMZKTECqbOxH3z4inA0JfZOoTvP4qoK9T2VXAx2Xg5g==}
@@ -6144,6 +6150,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/mdi@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/meteor-icons@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 

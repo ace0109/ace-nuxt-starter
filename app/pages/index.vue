@@ -1,11 +1,34 @@
 <template>
-  <div>
-    <ULocaleSelect
-      v-model="locale"
-      :locales="locales"
-      class="w-48"
-      @update:model-value="localeChange"
-    />
+  <div class="flex flex-col gap-2 p-4">
+    <div>
+      <UPopover mode="hover">
+        <UButton
+          icon="i-meteor-icons:language"
+          color="neutral"
+          variant="link"
+          :block="false"
+        >
+          切换语言
+        </UButton>
+
+        <template #content>
+          <div class="flex flex-col gap-2 p-2">
+            <NuxtLink
+              v-for="locale in i18nLocales"
+              :key="locale.code"
+              :to="$switchLocalePath(locale.code)"
+            >
+              {{ locale.name }}
+            </NuxtLink>
+          </div>
+        </template>
+      </UPopover>
+    </div>
+    <p>当前语言key：{{ currentLocale }}</p>
+    <p>nuxt ui 语言包Keys</p>
+    <p>{{ Object.keys(uiLocales) }}</p>
+
+    <p>{{ i18nLocales }}</p>
     <h1>{{ $t('welcome') }}</h1>
     <UCalendar />
   </div>
@@ -14,13 +37,5 @@
 <script lang="ts" setup>
 import * as uiLocales from '@nuxt/ui/locale'
 
-const { locale, locales: i18nLocales, setLocale } = useI18n()
-
-const locales = computed(() => {
-  return i18nLocales.value.map(l => uiLocales[l.code])
-})
-
-const localeChange = (value: string | undefined) => {
-  setLocale(value as 'en' | 'zh_cn')
-}
+const { locale: currentLocale, locales: i18nLocales } = useI18n()
 </script>
