@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/ui',
     '@nuxtjs/i18n',
+    '@nuxtjs/mdc',
   ],
   devtools: { enabled: true },
 
@@ -14,6 +15,13 @@ export default defineNuxtConfig({
 
   ui: {
     fonts: false,
+  },
+
+  runtimeConfig: {
+    public: {
+      apiHost: 'http://localhost:8000',
+      apiPrefix: 'api',
+    },
   },
   compatibilityDate: '2025-07-15',
 

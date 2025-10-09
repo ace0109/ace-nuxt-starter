@@ -1,61 +1,67 @@
 <template>
   <UApp :locale="locales[locale]">
-    <UHeader mode="slideover">
-      <template #title>
-        <NuxtLogo class="h-6 w-auto" />
-      </template>
+    <UPage>
+      <UHeader mode="slideover">
+        <template #title>
+          <NuxtLogo class="h-6 w-auto" />
+        </template>
 
-      <UNavigationMenu :items="items" />
+        <UNavigationMenu :items="items" />
 
-      <template #right>
-        <UPopover mode="hover">
-          <UButton
-            icon="i-meteor-icons:language"
-            color="neutral"
-            variant="link"
-            :block="false"
+        <template #right>
+          <p>{{ $t('welcome') }}</p>
+          <UPopover mode="hover">
+            <UButton
+              icon="i-meteor-icons:language"
+              color="neutral"
+              variant="link"
+              :block="false"
+            />
+
+            <template #content>
+              <div class="flex flex-col gap-2 p-2">
+                <NuxtLink
+                  v-for="item in i18nLocales"
+                  :key="item.code"
+                  :to="$switchLocalePath(item.code)"
+                >
+                  {{ item.name }}
+                </NuxtLink>
+              </div>
+            </template>
+          </UPopover>
+
+          <UColorModeButton />
+
+          <UTooltip
+            text="Open on GitHub"
+            :kbds="['meta', 'G']"
+          >
+            <UButton
+              color="neutral"
+              variant="ghost"
+              to="https://github.com/nuxt/ui"
+              target="_blank"
+              icon="i-simple-icons-github"
+              aria-label="GitHub"
+            />
+          </UTooltip>
+        </template>
+
+        <template #body>
+          <UNavigationMenu
+            :items="items"
+            orientation="vertical"
+            class="-mx-2.5"
           />
-
-          <template #content>
-            <div class="flex flex-col gap-2 p-2">
-              <NuxtLink
-                v-for="locale in i18nLocales"
-                :key="locale.code"
-                :to="$switchLocalePath(locale.code)"
-              >
-                {{ locale.name }}
-              </NuxtLink>
-            </div>
-          </template>
-        </UPopover>
-
-        <UColorModeButton />
-
-        <UTooltip
-          text="Open on GitHub"
-          :kbds="['meta', 'G']"
-        >
-          <UButton
-            color="neutral"
-            variant="ghost"
-            to="https://github.com/nuxt/ui"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-          />
-        </UTooltip>
-      </template>
-
-      <template #body>
-        <UNavigationMenu
-          :items="items"
-          orientation="vertical"
-          class="-mx-2.5"
-        />
-      </template>
-    </UHeader>
-
-    <NuxtPage />
+        </template>
+      </UHeader>
+      <UPageBody>
+        <UContainer>
+          <NuxtPage />
+        </UContainer>
+      </UPageBody>
+    </UPage>
   </UApp>
 </template>
 
