@@ -22,7 +22,7 @@
     "@nuxt/scripts": "0.12.1",
     "@nuxt/ui": "4.0.0",
     "@nuxtjs/i18n": "10.1.0",
-    "@nuxtjs/mdc": "0.17.4",
+    "@nuxtjs/mdc": "0.18.0",
     "@unhead/vue": "^2.0.17",
     "eslint": "^9.36.0",
     "nuxt": "^4.1.2",

@@ -21,6 +21,9 @@ export default defineNuxtConfig({
     public: {
       apiHost: 'http://localhost:8000',
       apiPrefix: 'api',
+      // 真实后端 API 地址
+      BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:8000',
+      NODE_ENV: process.env.NODE_ENV || 'development',
     },
   },
   compatibilityDate: '2025-07-15',
