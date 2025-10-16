@@ -2,63 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [Unreleased] (2025-10-15)
+## [0.1.0](https://github.com/ace0109/ace-nuxt-starter/compare/v0.0.3...v0.1.0) (2025-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* 移除了原有的认证系统，需要重新实现登录功能
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
 
 ### ✨ Features
 
-- **架构**: 实现完整的 BFF (Backend for Frontend) 架构
-- **认证**: 实现基于 Cookie + JWT 的双重认证系统
-  - 浏览器 ↔️ Nuxt Server: HttpOnly Cookie (安全)
-  - Nuxt Server ↔️ 真实后端: JWT Token (标准)
-- **API 封装**: 创建统一的 `useApi` composable
-  - 支持响应式数据获取模式
-  - 支持命令式操作模式
-  - 完整的 TypeScript 类型支持
-- **中间件**: Server 端认证中间件自动保护 API
-  - 自动提取 Cookie 中的 token
-  - 公开路径白名单机制
-  - Token 存储到 `event.context.auth`
-- **转发层**: 实现通用 API 转发
-  - 自动转发所有 `/api/*` 请求到真实后端
-  - 自动注入 JWT Token 到 Authorization header
-  - 自动处理 401 错误
-- **示例页面**: 添加完整的认证示例 (`/auth-demo`)
+* 实现完整的 BFF 架构和认证系统 ([f11d131](https://github.com/ace0109/ace-nuxt-starter/commit/f11d131dad9fb3df945a2aa404935468c02200f4))
 
-### 🛠️ 新增文件
 
-- `app/plugins/api.ts` - HTTP 客户端配置
-- `app/composables/useApi.ts` - 统一 API 调用接口
-- `server/middleware/auth.ts` - 认证中间件
-- `server/utils/auth.ts` - 认证工具函数
-- `server/utils/backendFetch.ts` - 后端请求工具
-- `server/api/auth/login.post.ts` - 登录 API
-- `server/api/auth/logout.post.ts` - 登出 API
-- `server/api/auth/me.get.ts` - 获取当前用户 API
-- `server/api/[...].ts` - 通用转发层
-- `types/server.ts` - TypeScript 类型定义
-- `app/pages/auth-demo.vue` - 认证示例页面
+### ♻️ Code Refactoring
 
-### 📚 Documentation
-
-- 创建 `API_DEVELOPMENT_LOG.md` - 完整的开发记录和架构说明 (580+ 行)
-- 创建 `QUICK_START.md` - 详细的快速入门指南 (350+ 行)
-- 创建 `PROJECT_SUMMARY.md` - 项目完成总结
-- 更新 `README.md` - 添加 BFF 架构说明和使用指南
-- 创建 `.env.example` - 环境变量示例
-
-### ⚙️ Configuration
-
-- 更新 `nuxt.config.ts` - 添加 `BACKEND_URL` 配置
-- 支持通过环境变量配置真实后端地址
-
-### 🎯 架构优势
-
-- 🔒 安全性: HttpOnly Cookie 防止 XSS 攻击
-- 📐 标准化: 后端使用标准 JWT，可服务多端
-- 🌐 SSR 友好: Cookie 在 SSR 时自动携带
-- 👨‍💻 开发体验: 简洁的 API，自动管理认证
-
----
+* 简化 API 架构并优化示例页面 ([37283e7](https://github.com/ace0109/ace-nuxt-starter/commit/37283e7ff6b760924d61f678a5e7005935bdbc22))
 
 ## [0.0.3](https://github.com/ace0109/ace-nuxt-starter/compare/v0.0.2...v0.0.3) (2025-10-09)
 
