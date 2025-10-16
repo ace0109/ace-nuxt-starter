@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import type { Resume } from '~~/types/api'
 
-const { data, status, error } = await useFetch<Resume>('/api/home/resume')
+const { data, status, error } = await useLazyAPI<Resume>('/api/home/resume')
 </script>
 
 <style scoped>
