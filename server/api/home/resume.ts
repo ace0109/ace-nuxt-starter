@@ -1,9 +1,8 @@
-import { apiCall } from '~~/server/utils/api'
 import type { Result, Resume } from '~~/types/api'
 
 export default defineEventHandler(async (event) => {
   try {
-    const response = await apiCall<Result<{ resume: Resume }>>(event, 'resume')
+    const response = await forwardRequest<Result<{ resume: Resume }>>(event)
 
     return {
       resume: response.data.resume,

@@ -53,10 +53,12 @@ export async function apiCall<T = unknown>(
  * })
  * ```
  */
-export async function forwardRequest(
+export async function forwardRequest<T = unknown>(
   event: H3Event,
   targetPath?: string,
 ) {
+  console.log('forwardRequest')
+
   // 如果没有指定目标路径，使用当前路径（去掉 /api 前缀）
   const path = targetPath || event.path.replace(/^\/api/, '')
   const method = event.method
@@ -79,7 +81,7 @@ export async function forwardRequest(
   }
 
   // 使用 apiCall 发送请求
-  return await apiCall(event, path, {
+  return await apiCall<T>(event, path, {
     method: method as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     headers: requestHeaders,
     body,
