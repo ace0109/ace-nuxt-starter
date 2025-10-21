@@ -2,7 +2,7 @@ import type { Result, Resume } from '~~/types/api'
 
 export default defineEventHandler(async (event) => {
   try {
-    const response = await forwardRequest<Result<{ resume: Resume }>>(event)
+    const response = await forwardRequest<Result<{ resume: Resume }>>(event, '/resume')
 
     return {
       resume: response.data.resume,

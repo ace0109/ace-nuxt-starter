@@ -57,8 +57,6 @@ export async function forwardRequest<T = unknown>(
   event: H3Event,
   targetPath?: string,
 ) {
-  console.log('forwardRequest')
-
   // 如果没有指定目标路径，使用当前路径（去掉 /api 前缀）
   const path = targetPath || event.path.replace(/^\/api/, '')
   const method = event.method

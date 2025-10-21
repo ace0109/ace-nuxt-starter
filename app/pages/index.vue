@@ -16,10 +16,7 @@
 <script lang="ts" setup>
 import type { Resume } from '~~/types/api'
 
-const { data, status, error } = await useLazyAPI<Resume>('/api/home/resume', {
-  method: 'POST',
-  body: { name: 'ace' },
-})
+const { data, status, error } = await useLazyAPI<Resume>('/api/home/resume')
 </script>
 
 <style scoped>
