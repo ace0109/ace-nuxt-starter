@@ -1,6 +1,6 @@
 <template>
   <div>
-    blog
+    console
   </div>
 </template>
 
