@@ -4,6 +4,7 @@
  */
 
 import type { H3Event } from 'h3'
+import { joinURL } from 'ufo'
 
 /**
  * 创建带有默认配置的 fetch 实例
@@ -13,7 +14,7 @@ export function createAPI(event: H3Event) {
   const config = useRuntimeConfig()
   const apiBase = config.public.apiBase
   const apiPrefix = config.public.apiPrefix
-  const baseURL = apiPrefix ? `${apiBase}/${apiPrefix}` : apiBase
+  const baseURL = apiPrefix ? joinURL(apiBase, apiPrefix) : apiBase
   const token = getCookie(event, 'token')
 
   // 构建请求头
