@@ -50,7 +50,7 @@
         orientation="vertical"
         :items="items"
         class="w-[260px] p-4"
-        :ui="{ link: 'h-[40px]' }"
+        :ui="{ link: 'h-10' }"
       />
       <USeparator
         orientation="vertical"
@@ -70,102 +70,19 @@ const switchLocalePath = useSwitchLocalePath()
 const items = ref<NavigationMenuItem[][]>([
   [
     {
-      label: 'Guide',
-      icon: 'i-lucide-book-open',
-      children: [
-        {
-          label: 'Introduction',
-          description: 'Fully styled and customizable components for Nuxt.',
-          icon: 'i-lucide-house',
-        },
-        {
-          label: 'Installation',
-          description: 'Learn how to install and configure Nuxt UI in your application.',
-          icon: 'i-lucide-cloud-download',
-        },
-        {
-          label: 'Icons',
-          icon: 'i-lucide-smile',
-          description: 'You have nothing to do, @nuxt/icon will handle it automatically.',
-        },
-        {
-          label: 'Colors',
-          icon: 'i-lucide-swatch-book',
-          description: 'Choose a primary and a neutral color from your Tailwind CSS theme.',
-        },
-        {
-          label: 'Theme',
-          icon: 'i-lucide-cog',
-          description: 'You can customize components by using the `class` / `ui` props or in your app.config.ts.',
-        },
-      ],
-    },
-    {
-      label: 'Composables',
-      icon: 'i-lucide-database',
-      children: [
-        {
-          label: 'defineShortcuts',
-          icon: 'i-lucide-file-text',
-          description: 'Define shortcuts for your application.',
-          to: '/docs/composables/define-shortcuts',
-        },
-        {
-          label: 'useOverlay',
-          icon: 'i-lucide-file-text',
-          description: 'Display a modal/slideover within your application.',
-          to: '/docs/composables/use-overlay',
-        },
-        {
-          label: 'useToast',
-          icon: 'i-lucide-file-text',
-          description: 'Display a toast within your application.',
-          to: '/docs/composables/use-toast',
-        },
-      ],
-    },
-    {
-      label: 'Components',
-      icon: 'i-lucide-box',
-      to: '/docs/components',
-      active: true,
+      label: '知识库',
+      icon: 'i-lucide-library',
       defaultOpen: true,
       children: [
         {
-          label: 'Link',
-          icon: 'i-lucide-file-text',
-          description: 'Use NuxtLink with superpowers.',
-          to: '/docs/components/link',
+          label: '文档列表',
+          icon: 'i-lucide-list',
+          to: '/console/knowledge-base',
         },
         {
-          label: 'Modal',
-          icon: 'i-lucide-file-text',
-          description: 'Display a modal within your application.',
-          to: '/docs/components/modal',
-        },
-        {
-          label: 'NavigationMenu',
-          icon: 'i-lucide-file-text',
-          description: 'Display a list of links.',
-          to: '/docs/components/navigation-menu',
-        },
-        {
-          label: 'Pagination',
-          icon: 'i-lucide-file-text',
-          description: 'Display a list of pages.',
-          to: '/docs/components/pagination',
-        },
-        {
-          label: 'Popover',
-          icon: 'i-lucide-file-text',
-          description: 'Display a non-modal dialog that floats around a trigger element.',
-          to: '/docs/components/popover',
-        },
-        {
-          label: 'Progress',
-          icon: 'i-lucide-file-text',
-          description: 'Show a horizontal bar to indicate task progression.',
-          to: '/docs/components/progress',
+          label: '入库与维护',
+          icon: 'i-lucide-archive-restore',
+          to: '/console/knowledge-base/manage',
         },
       ],
     },

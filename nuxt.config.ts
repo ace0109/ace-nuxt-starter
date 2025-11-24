@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-
   modules: [
     '@nuxt/eslint',
     '@nuxt/image',
@@ -18,9 +17,11 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    apiKey: process.env.NUXT_API_KEY || '1e07cafdad474e94b335c18589bde2a0',
+    aiApiBase: process.env.NUXT_AI_API_BASE || 'http://127.0.0.1:8000',
+    aiApiPrefix: process.env.NUXT_AI_API_PREFIX || 'api',
+    aiApiKey: process.env.NUXT_API_KEY || '',
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://nest.wangcaiyuan.com',
       apiPrefix: process.env.NUXT_PUBLIC_API_PREFIX || 'api',
     },
   },

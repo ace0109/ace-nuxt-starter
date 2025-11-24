@@ -8445,11 +8445,7 @@ snapshots:
       - uploadthing
       - vue
 
-<<<<<<< HEAD
-  '@nuxtjs/mdc@0.18.0(magicast@0.3.5)':
-=======
   '@nuxtjs/mdc@0.18.0(magicast@0.5.1)':
->>>>>>> 5a9ffd88be3a9ba4aa2f9c4be384bbbdd40e228a
     dependencies:
       '@nuxt/kit': 4.1.3(magicast@0.5.1)
       '@shikijs/core': 3.13.0
