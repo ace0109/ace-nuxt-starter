@@ -35,3 +35,17 @@ export interface Article {
 export interface ArticleResponse {
   articles: Article[]
 }
+
+export interface AIMessageChunk {
+  content: string
+  additional_kwargs: Record<string, unknown>
+  response_metadata: Record<string, unknown>
+  type: 'AIMessageChunk'
+  name: string | null
+  id: string
+  tool_calls: unknown[]
+  invalid_tool_calls: unknown[]
+  usage_metadata: Record<string, unknown> | null
+  tool_call_chunks: unknown[]
+  chunk_position: number | null
+}

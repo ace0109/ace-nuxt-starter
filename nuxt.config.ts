@@ -18,9 +18,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    apiKey: process.env.NUXT_API_KEY || '1e07cafdad474e94b335c18589bde2a0',
     public: {
-      apiBase: 'http://localhost:3001',
-      apiPrefix: 'api',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:8000',
+      apiPrefix: process.env.NUXT_PUBLIC_API_PREFIX || 'api',
     },
   },
   compatibilityDate: '2025-07-15',

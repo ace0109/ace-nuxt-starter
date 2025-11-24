@@ -6,7 +6,7 @@
       </template>
 
       <template #right>
-        <p>{{ $t('welcome') }}</p>
+        <p>{{ t('welcome') }}</p>
         <UPopover mode="hover">
           <UButton
             icon="i-meteor-icons:language"
@@ -20,7 +20,7 @@
               <NuxtLink
                 v-for="item in i18nLocales"
                 :key="item.code"
-                :to="$switchLocalePath(item.code)"
+                :to="switchLocalePath(item.code)"
               >
                 {{ item.name }}
               </NuxtLink>
@@ -64,7 +64,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const { locales: i18nLocales } = useI18n()
+const { t, locales: i18nLocales } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
 
 const items = ref<NavigationMenuItem[][]>([
   [

@@ -34,6 +34,7 @@
     "@iconify-json/meteor-icons": "^1.2.1",
     "@iconify-json/simple-icons": "^1.2.53",
     "@nuxt/eslint": "^1.10.0",
+    "@types/node": "^24.10.1",
     "commit-and-tag-version": "^12.6.0",
     "eslint": "^9.36.0",
     "less": "^4.4.1",

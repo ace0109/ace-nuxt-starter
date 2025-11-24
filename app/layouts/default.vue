@@ -8,7 +8,7 @@
       <UNavigationMenu :items="items" />
 
       <template #right>
-        <p>{{ $t('welcome') }}</p>
+        <p>{{ t('welcome') }}</p>
         <UPopover mode="hover">
           <UButton
             icon="i-meteor-icons:language"
@@ -22,7 +22,7 @@
               <NuxtLink
                 v-for="item in i18nLocales"
                 :key="item.code"
-                :to="$switchLocalePath(item.code)"
+                :to="switchLocalePath(item.code)"
               >
                 {{ item.name }}
               </NuxtLink>
@@ -66,28 +66,29 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const { locales: i18nLocales } = useI18n()
+const { t, locales: i18nLocales } = useI18n()
+const switchLocalePath = useSwitchLocalePath()
 
 const route = useRoute()
 
 const items = computed<NavigationMenuItem[]>(() => [
   {
-    label: '导航1',
-    to: '/nav/1',
-    icon: 'i-carbon-blog',
-    active: route.path.startsWith('/nav/1'),
+    label: 'Chat',
+    to: '/chat',
+    icon: 'i-heroicons-chat-bubble-left-right',
+    active: route.path.startsWith('/chat'),
   },
   {
-    label: '导航2',
-    to: '/nav/2',
-    icon: 'i-ix-projects',
-    active: route.path.startsWith('/nav/2'),
+    label: 'Knowledge Base',
+    to: '/console/knowledge-base',
+    icon: 'i-heroicons-book-open',
+    active: route.path.startsWith('/console/knowledge-base'),
   },
   {
-    label: '外部链接',
+    label: 'Nuxt Docs',
     to: 'https://nuxt.com/',
     target: '_blank',
-    icon: 'i-mdi-onenote',
+    icon: 'i-simple-icons-nuxtdotjs',
   },
 ])
 </script>

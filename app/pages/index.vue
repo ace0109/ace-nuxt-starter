@@ -1,7 +1,10 @@
 <template>
   <div class="slide-enter-content">
     <ClientOnly>
-      <div v-if="status === 'pending'" class="max-w-[600px] m-auto space-y-4">
+      <div
+        v-if="status === 'pending'"
+        class="max-w-[600px] m-auto space-y-4"
+      >
         <USkeleton class="h-8 w-3/4" />
         <USkeleton class="h-4 w-full" />
         <USkeleton class="h-4 w-full" />

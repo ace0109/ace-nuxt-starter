@@ -16,11 +16,14 @@ export function createAPI(event: H3Event) {
   const apiPrefix = config.public.apiPrefix
   const baseURL = apiPrefix ? joinURL(apiBase, apiPrefix) : apiBase
   const token = getCookie(event, 'token')
+  const apiKey = config.apiKey
 
   // 构建请求头
-  const headers: HeadersInit = token
-    ? { Authorization: `Bearer ${token}` }
-    : {}
+  const headers: HeadersInit = {}
+  if (token)
+    headers.Authorization = `Bearer ${token}`
+  if (apiKey)
+    headers['X-API-KEY'] = apiKey
 
   return $fetch.create({
     baseURL,
@@ -74,7 +77,8 @@ export async function forwardRequest<T = unknown>(
   const requestHeaders: Record<string, string> = {}
 
   for (const [key, value] of Object.entries(headers)) {
-    if (!['host', 'x-forwarded-for', 'x-forwarded-proto', 'connection'].includes(key.toLowerCase())) {
+    const lowerKey = key.toLowerCase()
+    if (!['host', 'x-forwarded-for', 'x-forwarded-proto', 'connection', 'x-api-key'].includes(lowerKey)) {
       requestHeaders[key] = value as string
     }
   }
