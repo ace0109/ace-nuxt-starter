@@ -1,15 +1,32 @@
 <template>
   <div class="slide-enter-content">
-    <p v-if="error">
-      error: {{ error }}
-    </p>
-    <div v-if="status === 'success' && data?.resume?.content">
-      <MDC
-        class="max-w-[600px] m-auto mdc-renderer"
-        :value="data.resume.content"
-        tag="article"
+    <ClientOnly>
+      <div
+        v-if="status === 'pending'"
+        class="max-w-[600px] m-auto space-y-4"
+      >
+        <USkeleton class="h-8 w-3/4" />
+        <USkeleton class="h-4 w-full" />
+        <USkeleton class="h-4 w-full" />
+        <USkeleton class="h-4 w-2/3" />
+      </div>
+
+      <UAlert
+        v-else-if="error"
+        color="error"
+        variant="soft"
+        title="Error loading resume"
+        :description="error.message"
       />
-    </div>
+
+      <div v-else-if="status === 'success' && data?.resume?.content">
+        <MDC
+          class="max-w-[600px] m-auto mdc-renderer"
+          :value="data.resume.content"
+          tag="article"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 

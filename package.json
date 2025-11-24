@@ -17,18 +17,14 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/eslint": "1.9.0",
-    "@nuxt/image": "1.11.0",
-    "@nuxt/scripts": "0.12.1",
-    "@nuxt/ui": "4.0.0",
-    "@nuxtjs/i18n": "10.1.0",
-    "@nuxtjs/mdc": "0.18.0",
+    "@nuxt/image": "^2.0.0",
+    "@nuxt/scripts": "^0.13.0",
+    "@nuxt/ui": "^4.2.1",
+    "@nuxtjs/i18n": "^10.2.1",
+    "@nuxtjs/mdc": "^0.18.0",
     "@unhead/vue": "^2.0.17",
-    "eslint": "^9.36.0",
-    "nuxt": "^4.1.2",
-    "typescript": "^5.9.2",
-    "vue": "^3.5.21",
-    "vue-router": "^4.5.1"
+    "nuxt": "^4.2.1",
+    "vue": "^3.5.21"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.13",
@@ -37,7 +33,11 @@
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/meteor-icons": "^1.2.1",
     "@iconify-json/simple-icons": "^1.2.53",
+    "@nuxt/eslint": "^1.10.0",
+    "@types/node": "^24.10.1",
+    "commit-and-tag-version": "^12.6.0",
+    "eslint": "^9.36.0",
     "less": "^4.4.1",
-    "commit-and-tag-version": "12.6.0"
+    "typescript": "^5.9.2"
   }
 }
