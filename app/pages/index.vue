@@ -1,5 +1,5 @@
 <template>
-  <div class="slide-enter-content">
+  <div class="slide-enter-content pt-10">
     <UAlert
       v-if="error"
       color="error"
@@ -7,7 +7,6 @@
       title="Error loading resume"
       :description="error.message"
     />
-
     <div v-else-if="data?.resume?.content">
       <MDC
         class="max-w-[600px] m-auto mdc-renderer"

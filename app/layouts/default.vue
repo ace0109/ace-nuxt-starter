@@ -8,7 +8,7 @@
       <UNavigationMenu :items="items" />
 
       <template #right>
-        <p>{{ t('welcome') }}</p>
+        <!-- <p>{{ t('welcome') }}</p>
         <UPopover mode="hover">
           <UButton
             icon="i-meteor-icons:language"
@@ -28,7 +28,7 @@
               </NuxtLink>
             </div>
           </template>
-        </UPopover>
+        </UPopover> -->
 
         <UColorModeButton />
 
@@ -39,7 +39,7 @@
           <UButton
             color="neutral"
             variant="ghost"
-            to="https://github.com/nuxt/ui"
+            to="https://github.com/ace0109"
             target="_blank"
             icon="i-simple-icons-github"
             aria-label="GitHub"
@@ -55,13 +55,16 @@
         />
       </template>
     </UHeader>
-    <UPageBody class="pb-16">
+    <UPageBody class="pb-[54px] m-0">
       <UContainer>
         <slot />
       </UContainer>
     </UPageBody>
 
-    <UFooter class="fixed bottom-0 inset-x-0 bg-default/80 backdrop-blur border-t border-default">
+    <UFooter
+      class="w-screen fixed bottom-0 border-t border-default"
+      :ui="{ container: 'p-4! justify-center!', center: 'm-0', left: 'hidden', right: 'hidden' }"
+    >
       <div class="flex items-center justify-center gap-4 text-muted text-sm">
         <span>&copy; {{ new Date().getFullYear() }} Ace</span>
         <span>·</span>
@@ -80,8 +83,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const { t, locales: i18nLocales } = useI18n()
-const switchLocalePath = useSwitchLocalePath()
+// const { t, locales: i18nLocales } = useI18n()
+// const switchLocalePath = useSwitchLocalePath()
 
 const route = useRoute()
 

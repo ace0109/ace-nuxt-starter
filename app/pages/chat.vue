@@ -1,32 +1,101 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import type { AIMessageChunk } from '~~/types/api'
+import { getTextFromMessage } from '@nuxt/ui/utils/ai'
 
-const messages = ref<{ role: 'user' | 'assistant', content: string }[]>([])
+definePageMeta({
+  ssr: false,
+})
+
+interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  parts: { type: 'text', text: string }[]
+}
+
+interface HistoryMessage {
+  id: number
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
+
+interface HistoryResponse {
+  code: string
+  message: string
+  data: HistoryMessage[]
+}
+
+const route = useRoute()
+const router = useRouter()
+
+const messages = ref<ChatMessage[]>([])
 const input = ref('')
-const loading = ref(false)
-const scrollEl = ref<HTMLElement | null>(null)
+const status = ref<'ready' | 'submitted' | 'streaming' | 'error'>('ready')
+const chatContainerRef = ref<HTMLElement | null>(null)
+const sessionId = ref<string | null>(null)
 let controller: AbortController | null = null
 
-const scrollToBottom = async () => {
-  await nextTick()
-  const el = scrollEl.value
-  if (el)
-    el.scrollTop = el.scrollHeight
+// 从路由获取 session_id
+const initSessionId = () => {
+  const id = route.query.session_id
+  if (id && typeof id === 'string') {
+    sessionId.value = id
+  }
+}
+
+// 更新路由中的 session_id
+const updateRouteSessionId = (id: string) => {
+  sessionId.value = id
+  router.replace({ query: { ...route.query, session_id: id } })
+}
+
+// 滚动到底部
+const scrollToBottom = () => {
+  const el = chatContainerRef.value
+  if (!el) return
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight
+    })
+  })
+}
+
+// 加载聊天历史记录
+const loadChatHistory = async () => {
+  if (!sessionId.value) return
+
+  try {
+    const response = await $fetch<HistoryResponse>(`/api/ai/chat/sessions/${sessionId.value}/messages`)
+    if (response.code === '200' && response.data) {
+      messages.value = response.data.map(msg => ({
+        id: String(msg.id),
+        role: msg.role,
+        parts: [{ type: 'text', text: msg.content }],
+      }))
+    }
+  }
+  catch (error) {
+    console.error('Failed to load chat history:', error)
+  }
 }
 
 const pushMessage = (role: 'user' | 'assistant', content: string) => {
-  messages.value.push({ role, content })
-  scrollToBottom()
+  messages.value.push({
+    id: crypto.randomUUID(),
+    role,
+    parts: [{ type: 'text', text: content }],
+  })
+  nextTick(() => scrollToBottom())
 }
 
 const stop = () => {
   controller?.abort()
   controller = null
-  loading.value = false
+  status.value = 'ready'
 }
 
 const sendMessage = async () => {
-  if (!input.value.trim() || loading.value) return
+  if (!input.value.trim() || status.value === 'streaming') return
 
   stop()
   controller = new AbortController()
@@ -34,28 +103,31 @@ const sendMessage = async () => {
   const userMessage = input.value
   pushMessage('user', userMessage)
   input.value = ''
-  loading.value = true
+  status.value = 'submitted'
 
   try {
     const response = await fetch('/api/ai/chat', {
       method: 'POST',
       signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: userMessage }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage,
+        session_id: sessionId.value,
+      }),
     })
 
     if (!response.ok) throw new Error('Network response was not ok')
-
     if (!response.body) throw new Error('Response body is null')
-    const reader = response.body.getReader()
 
+    const reader = response.body.getReader()
     const decoder = new TextDecoder()
     let buffer = ''
     let assistantMessage = ''
+    let isFirstChunk = true
+
     pushMessage('assistant', '')
     const currentMessageIndex = messages.value.length - 1
+    status.value = 'streaming'
 
     const handleEvent = (rawEvent: string) => {
       const lines = rawEvent.split(/\r?\n/)
@@ -67,17 +139,29 @@ const sendMessage = async () => {
       if (!dataPayload || dataPayload === '[DONE]') return
 
       try {
-        const chunk = JSON.parse(dataPayload) as AIMessageChunk
-        assistantMessage += chunk.content ?? ''
+        const chunk = JSON.parse(dataPayload)
+
+        // 检查是否是 session_id 响应
+        if (isFirstChunk && chunk.session_id && !sessionId.value) {
+          updateRouteSessionId(chunk.session_id)
+          isFirstChunk = false
+          return
+        }
+        isFirstChunk = false
+
+        // 处理消息内容
+        const messageChunk = chunk as AIMessageChunk
+        assistantMessage += messageChunk.content ?? ''
       }
       catch {
         assistantMessage += dataPayload
       }
 
       const currentMessage = messages.value[currentMessageIndex]
-      if (!currentMessage) return
-      currentMessage.content = assistantMessage
-      scrollToBottom()
+      if (currentMessage) {
+        currentMessage.parts = [{ type: 'text', text: assistantMessage }]
+        scrollToBottom()
+      }
     }
 
     while (true) {
@@ -91,125 +175,116 @@ const sendMessage = async () => {
       buffer = events.pop() || ''
 
       for (const event of events) {
-        if (event.trim())
-          handleEvent(event)
+        if (event.trim()) handleEvent(event)
       }
     }
 
-    if (buffer.trim()) {
-      handleEvent(buffer)
-    }
+    if (buffer.trim()) handleEvent(buffer)
+    status.value = 'ready'
   }
   catch (error) {
     console.error('Error:', error)
+    status.value = 'error'
     pushMessage('assistant', 'Error occurred. Please retry or check your connection.')
   }
   finally {
-    loading.value = false
     controller = null
   }
 }
+
+// 初始化
+onMounted(async () => {
+  initSessionId()
+  if (sessionId.value) {
+    await loadChatHistory()
+  }
+})
 
 onBeforeUnmount(() => stop())
 </script>
 
 <template>
-  <div class="h-[calc(100vh-140px)] flex flex-col rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 shadow-sm overflow-hidden">
-    <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800">
-      <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
-        ACE AI
-      </h1>
-      <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-        <span
-          class="w-2 h-2 rounded-full"
-          :class="loading ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'"
-        />
-        <span>{{ loading ? 'Replying...' : 'Idle' }}</span>
-      </div>
-    </div>
-
-    <div class="flex-1 overflow-hidden">
-      <div
-        ref="scrollEl"
-        class="h-full overflow-y-auto px-4 py-4 space-y-4"
-      >
-        <div
-          v-for="(msg, index) in messages"
-          :key="index"
-          class="flex items-start gap-3"
-          :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
-        >
-          <template v-if="msg.role === 'assistant'">
-            <UAvatar
-              size="xs"
-              icon="i-heroicons-sparkles"
-              class="bg-emerald-500/15 text-emerald-600 dark:text-emerald-200 border border-emerald-500/30"
+  <div class="h-[calc(100vh-118px)] py-4">
+    <UCard
+      class="h-full flex flex-col"
+      :ui="{ body: 'relative flex-1 h-px p-0 sm:p-0', footer: 'p-4' }"
+    >
+      <template #header>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <UIcon
+              name="i-heroicons-sparkles"
+              class="text-primary size-5"
             />
-            <div class="max-w-[75%] rounded-2xl px-4 py-3 bg-slate-50 border border-slate-200 dark:bg-slate-800/70 dark:border-slate-700">
-              <MDC
-                class="prose prose-sm max-w-none text-slate-800 dark:prose-invert"
-                :value="msg.content || '...'"
-              />
-            </div>
-          </template>
-          <template v-else>
-            <div class="max-w-[75%] rounded-2xl px-4 py-3 bg-primary-500 text-white shadow-sm">
-              <MDC
-                class="prose prose-sm max-w-none text-white"
-                :value="msg.content || ''"
-              />
-            </div>
-            <UAvatar
-              size="xs"
-              icon="i-heroicons-user"
-              class="bg-primary-500/15 text-primary-700 dark:text-primary-200 border border-primary-400/30"
-            />
-          </template>
+            <span class="text-lg font-semibold">ACE AI</span>
+          </div>
+          <UBadge
+            :color="status === 'streaming' ? 'success' : status === 'error' ? 'error' : 'neutral'"
+            :variant="status === 'streaming' ? 'solid' : 'subtle'"
+            :label="status === 'streaming' ? 'Replying...' : status === 'error' ? 'Error' : 'Idle'"
+            :class="status === 'streaming' && 'animate-pulse'"
+          />
         </div>
+      </template>
 
-        <div
-          v-if="messages.length === 0"
-          class="text-center text-slate-400 py-10"
-        >
+      <div
+        v-if="messages.length === 0"
+        class="h-full flex items-center justify-center"
+      >
+        <div class="text-center text-muted">
+          <UIcon
+            name="i-heroicons-chat-bubble-left-right"
+            class="size-12 mb-4 opacity-50"
+          />
           <p class="text-sm">
             Start chatting with ACE AI.
           </p>
         </div>
       </div>
-    </div>
 
-    <div class="sticky bottom-0 w-full border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 py-3">
-      <div class="flex gap-2 items-end">
-        <UTextarea
+      <div
+        v-else
+        ref="chatContainerRef"
+        class="h-full overflow-y-auto pt-8"
+      >
+        <UChatMessages
+          :messages="messages"
+          :status="status"
+          class="px-4 py-4"
+          :user="{
+            side: 'right',
+            variant: 'soft',
+            avatar: { icon: 'i-heroicons-user' },
+          }"
+          :assistant="{
+            side: 'left',
+            variant: 'outline',
+            avatar: { icon: 'i-heroicons-sparkles' },
+          }"
+        >
+          <template #content="{ message }">
+            <MDC
+              :value="getTextFromMessage(message) || '...'"
+              :cache-key="message.id"
+              class="max-w-none *:first:mt-0 *:last:mb-0"
+            />
+          </template>
+        </UChatMessages>
+      </div>
+
+      <template #footer>
+        <UChatPrompt
           v-model="input"
           placeholder="Type your question, press Enter to send"
-          class="flex-1"
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          :disabled="loading"
-          @keydown.enter.prevent="sendMessage"
-          @keydown.meta.enter.prevent="sendMessage"
-          @keydown.ctrl.enter.prevent="sendMessage"
-        />
-        <div class="flex flex-col gap-2">
-          <UButton
-            color="primary"
-            :loading="loading"
-            label="Send"
-            icon="i-heroicons-paper-airplane"
-            class="w-24"
-            @click="sendMessage"
+          :disabled="status === 'streaming'"
+          @submit="sendMessage"
+        >
+          <UChatPromptSubmit
+            :status="status"
+            @stop="stop"
           />
-          <UButton
-            v-if="loading"
-            color="neutral"
-            variant="ghost"
-            icon="i-heroicons-stop-circle"
-            label="Stop"
-            class="w-24"
-            @click="stop"
-          />
-        </div>
-      </div>
-    </div>
+        </UChatPrompt>
+      </template>
+    </UCard>
   </div>
 </template>
