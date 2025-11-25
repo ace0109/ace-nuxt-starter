@@ -55,11 +55,25 @@
         />
       </template>
     </UHeader>
-    <UPageBody>
+    <UPageBody class="pb-16">
       <UContainer>
         <slot />
       </UContainer>
     </UPageBody>
+
+    <UFooter class="fixed bottom-0 inset-x-0 bg-default/80 backdrop-blur border-t border-default">
+      <div class="flex items-center justify-center gap-4 text-muted text-sm">
+        <span>&copy; {{ new Date().getFullYear() }} Ace</span>
+        <span>·</span>
+        <NuxtLink
+          to="https://beian.miit.gov.cn/"
+          target="_blank"
+          class="hover:text-highlighted transition-colors"
+        >
+          闽ICP备17004041号-7
+        </NuxtLink>
+      </div>
+    </UFooter>
   </UPage>
 </template>
 
@@ -92,7 +106,3 @@ const items = computed<NavigationMenuItem[]>(() => [
   },
 ])
 </script>
-
-<style>
-
-</style>
