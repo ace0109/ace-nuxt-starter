@@ -33,6 +33,7 @@ const input = ref('')
 const status = ref<'ready' | 'submitted' | 'streaming' | 'error'>('ready')
 const chatContainerRef = ref<HTMLElement | null>(null)
 const sessionId = ref<string | null>(null)
+const showKnowledgeBase = ref(false)
 let controller: AbortController | null = null
 
 // 从路由获取 session_id
@@ -218,12 +219,20 @@ onBeforeUnmount(() => stop())
             />
             <span class="text-lg font-semibold">ACE AI</span>
           </div>
-          <UBadge
-            :color="status === 'streaming' ? 'success' : status === 'error' ? 'error' : 'neutral'"
-            :variant="status === 'streaming' ? 'solid' : 'subtle'"
-            :label="status === 'streaming' ? 'Replying...' : status === 'error' ? 'Error' : 'Idle'"
-            :class="status === 'streaming' && 'animate-pulse'"
+          <UButton
+            icon="i-heroicons-book-open"
+            color="primary"
+            label="知识库管理"
+            @click="showKnowledgeBase = true"
           />
+          <div class="flex items-center gap-2">
+            <UBadge
+              :color="status === 'streaming' ? 'success' : status === 'error' ? 'error' : 'neutral'"
+              :variant="status === 'streaming' ? 'solid' : 'subtle'"
+              :label="status === 'streaming' ? 'Replying...' : status === 'error' ? 'Error' : 'Idle'"
+              :class="status === 'streaming' && 'animate-pulse'"
+            />
+          </div>
         </div>
       </template>
 
@@ -286,5 +295,7 @@ onBeforeUnmount(() => stop())
         </UChatPrompt>
       </template>
     </UCard>
+
+    <KnowledgeBaseDrawer v-model="showKnowledgeBase" />
   </div>
 </template>

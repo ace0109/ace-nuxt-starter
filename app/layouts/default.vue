@@ -96,12 +96,6 @@ const items = computed<NavigationMenuItem[]>(() => [
     active: route.path.startsWith('/chat'),
   },
   {
-    label: 'Knowledge Base',
-    to: '/console/knowledge-base',
-    icon: 'i-heroicons-book-open',
-    active: route.path.startsWith('/console/knowledge-base'),
-  },
-  {
     label: 'Nuxt Docs',
     to: 'https://nuxt.com/',
     target: '_blank',
