@@ -125,10 +125,7 @@ const sendMessage = async () => {
     let buffer = ''
     let assistantMessage = ''
     let isFirstChunk = true
-
-    pushMessage('assistant', '')
-    const currentMessageIndex = messages.value.length - 1
-    status.value = 'streaming'
+    let currentMessageIndex = -1
 
     const handleEvent = (rawEvent: string) => {
       const lines = rawEvent.split(/\r?\n/)
@@ -158,10 +155,19 @@ const sendMessage = async () => {
         assistantMessage += dataPayload
       }
 
-      const currentMessage = messages.value[currentMessageIndex]
-      if (currentMessage) {
-        currentMessage.parts = [{ type: 'text', text: assistantMessage }]
-        scrollToBottom()
+      // 只有在有实际内容时才创建消息并更新状态为 streaming
+      if (assistantMessage && status.value === 'submitted') {
+        pushMessage('assistant', '')
+        currentMessageIndex = messages.value.length - 1
+        status.value = 'streaming'
+      }
+
+      if (currentMessageIndex >= 0) {
+        const currentMessage = messages.value[currentMessageIndex]
+        if (currentMessage) {
+          currentMessage.parts = [{ type: 'text', text: assistantMessage }]
+          scrollToBottom()
+        }
       }
     }
 
