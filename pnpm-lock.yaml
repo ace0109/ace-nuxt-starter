@@ -36,6 +36,9 @@ importers:
       '@iconify-json/carbon':
         specifier: ^1.2.13
         version: 1.2.14
+      '@iconify-json/heroicons':
+        specifier: ^1.2.3
+        version: 1.2.3
       '@iconify-json/ix':
         specifier: ^1.2.8
         version: 1.2.10
@@ -702,6 +705,9 @@ packages:
 
   '@iconify-json/carbon@1.2.14':
     resolution: {integrity: sha512-33u6uGiYJ79Dfp72peT+PBMcjxzi+NyJLpqYRX8pnw0zchsUW7Us2xecgvkWgD83KYcbe6hufyWlHFU9y7fb/Q==}
+
+  '@iconify-json/heroicons@1.2.3':
+    resolution: {integrity: sha512-n+vmCEgTesRsOpp5AB5ILB6srsgsYK+bieoQBNlafvoEhjVXLq8nIGN4B0v/s4DUfa0dOrjwE/cKJgIKdJXOEg==}
 
   '@iconify-json/ix@1.2.10':
     resolution: {integrity: sha512-2NMqsW+sMyH+cpRnRW6mVqJM/q3Mbb7UVY9NWJJEJfHGn1SbzZde/jpgEmTZe5jMJMPQGWhaCzbGsTMrFim+3Q==}
@@ -7408,6 +7414,10 @@ snapshots:
   '@hutson/parse-repository-url@3.0.2': {}
 
   '@iconify-json/carbon@1.2.14':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/heroicons@1.2.3':
     dependencies:
       '@iconify/types': 2.0.0
 
